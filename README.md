@@ -29,7 +29,7 @@ pip install ultralytics opencv-python
 2. **Set the YOLOv8 model path:**
    Update the `model_path` in the code to point to your trained YOLOv8 model weights. Example:
    ```python
-   model_path = '/home/haroon-raza/Documents/Models/ver_3/output_v3/yolo_experiment/weights/best.pt'
+   model_path = '..\best.pt'
    ```
 
 3. **Set IP camera URL:**
