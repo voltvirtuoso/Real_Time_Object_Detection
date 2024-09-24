@@ -3,14 +3,14 @@ from ultralytics import YOLO
 import time
 
 # Step 1: Load the trained YOLO model
-model_path = '/home/haroon-raza/Documents/Models/ver_3/output_v3/yolo_experiment/weights/best.pt'
+model_path = './best.pt'
 model = YOLO(model_path)
 
 # Set the confidence threshold
 confidence_threshold = 0.85
 
-# Set the target resize dimension (largest dimension will be resized to this)
-target_size = None
+# Set the target resize dimension (largest dimension will be resized to this) Use None to skip
+target_size = 640
 
 # Step 2: Initialize the video capture with IP camera URL
 ip_camera_url = 'http://192.168.43.1:8080/video'  # Replace with your IP camera URL
