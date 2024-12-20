@@ -1,86 +1,100 @@
-# Real-Time Object Detection with YOLOv8
+# Multi-Cam Object Tracking Using YOLOv8
 
-This repository demonstrates a real-time object detection system using the YOLOv8 model and OpenCV to capture live video from an IP camera. The detection is performed frame-by-frame, with bounding boxes drawn around detected objects, and their classes and confidence scores displayed. It also includes functionality to resize video frames while maintaining the aspect ratio.
+## Overview
+This repository demonstrates real-time object detection and tracking using YOLOv8. It supports both video files and live streams, offering high-speed inference and accurate object detection. The project is split into two primary scripts:
+
+1. `object_detection.py`: Handles processing of videos and images for object detection.
+2. `RTOD.py`: Facilitates real-time object detection from an IP camera feed.
 
 ## Features
-- **YOLOv8 Model Integration:** Leverages the YOLOv8 model for object detection.
-- **IP Camera Support:** Streams video from an IP camera for real-time processing.
-- **Frame Resizing with Aspect Ratio:** Allows resizing the largest frame dimension to a target size while maintaining the original aspect ratio.
-- **Confidence Filtering:** Filters detected objects based on a configurable confidence threshold.
-- **Real-Time Display:** Shows the detection results with bounding boxes and labels in real time.
+- **Real-time Object Detection**: Processes video frames in real-time using YOLOv8.
+- **Batch Processing**: Handles multiple video/image files from a directory.
+- **Resizing with Aspect Ratio**: Ensures input frames maintain their original aspect ratio.
+- **Metadata Generation**: Saves detection results in a metadata file.
+- **Dynamic FPS Handling**: Adjusts frame skipping based on FPS settings.
+- **Live Stream Integration**: Processes video streams from IP cameras.
 
 ## Requirements
-- Python 3.x
-- [Ultralytics YOLO package](https://github.com/ultralytics/ultralytics)
-- OpenCV (`cv2`)
+To run this project, you need:
 
-You can install the dependencies using the following command:
+- Python 3.7+
+- OpenCV
+- [Ultralytics YOLO](https://github.com/ultralytics/ultralytics)
+- NumPy
+
+Install the required dependencies using the following command:
 ```bash
-pip install ultralytics opencv-python
+pip install -r requirements.txt
 ```
 
-## Setup
-1. **Clone the repository:**
-   ```bash
-   git clone https://github.com/voltvirtuoso/Real_Time_Object_Detection.git
-   cd Real_Time_Object_Detection
-   ```
-
-2. **Set the YOLOv8 model path:**
-   Update the `model_path` in the code to point to your trained YOLOv8 model weights. Example:
-   ```python
-   model_path = '.\best.pt'
-   ```
-
-3. **Set IP camera URL:**
-   Update the `ip_camera_url` in the code to your IP camera stream:
-   ```python
-   ip_camera_url = 'http://192.168.43.1:8080/video'
-   ```
+## File Structure
+```
+.
+├── object_detection.py   # Processes video and image files
+├── RTOD.py               # Real-time object detection from IP camera
+├── requirements.txt      # Python dependencies
+├── best.pt               # Trained YOLO model weights
+├── output/               # Output directory for processed files
+└── README.md             # Project documentation
+```
 
 ## Usage
-1. **Run the detection script:**
-   To start real-time detection, simply run the Python script:
-   ```bash
-   python object_detection.py
-   ```
 
-2. **Adjust the confidence threshold:**
-   The confidence threshold is set at 0.85 by default, but you can modify it:
-   ```python
-   confidence_threshold = 0.85
-   ```
+### 1. Object Detection
+To process videos or images, use `object_detection.py`.
 
-3. **Frame resizing with aspect ratio:**
-   Set the `target_size` to resize frames while keeping the aspect ratio. Example:
-   ```python
-   target_size = 640  # Resize the largest dimension to 640 pixels
-   ```
-
-4. **Exit:**
-   Press the `q` key to exit the video stream and stop the detection.
-
-## Code Overview
-The script is structured as follows:
-
-- **Model Loading:** Loads the trained YOLOv8 model for inference.
-- **IP Camera Stream:** Captures video frames from the IP camera using OpenCV.
-- **Frame Resizing:** Adjusts the size of the video frames while maintaining the aspect ratio.
-- **Object Detection:** Detects objects using the YOLOv8 model, filters results based on confidence, and draws bounding boxes and labels on the frame.
-- **Display Results:** Displays the video with annotated detection results in real time.
-
-### Key Functions:
-- `resize_frame_with_aspect_ratio(frame, target_size)`: Resizes the frame while preserving the aspect ratio.
-
-## Example Output
-In this example, the detected objects in the frame will be highlighted with bounding boxes, and each object’s label and confidence score will be displayed:
-
+#### Command:
+```bash
+python object_detection.py
 ```
-Real-time Detection:
-- Person 0.89
-- Car 0.92
-- Dog 0.78
+#### Key Parameters:
+- `model_path`: Path to the YOLO model weights (default: `./best.pt`).
+- `input_path`: Directory or file to process (default: `./`).
+- `export_dir`: Directory to save processed files (default: `./output`).
+- `show_video`: Set to `True` to display processed video in real-time.
+- `confidence_threshold`: Confidence threshold for detection (default: `0.5`).
+
+### 2. Real-Time Object Detection
+To run real-time object detection from an IP camera, use `RTOD.py`.
+
+#### Command:
+```bash
+python RTOD.py
 ```
+#### Key Parameters:
+- `ip_camera_url`: URL of the IP camera (e.g., `http://192.168.4.105:8080/video`).
+- `model_name`: YOLO model name (default: `yolov8n.pt`).
+- `confidence_threshold`: Confidence threshold for detection (default: `0.75`).
+- `target_size`: Resize dimension for input frames (default: `640`).
+- `fps_option`: Set FPS mode (`'auto'` or an integer, e.g., `30`).
+
+## Outputs
+- **Processed Video/Image**: Saved in the `output/` directory.
+- **Metadata**: Detection results saved in `metadata.txt`, including object labels and confidence scores.
+
+## Example
+### Detecting Objects in a Video File
+```bash
+python object_detection.py --input_path ./videos/sample.mp4 --export_dir ./output --show_video True
+```
+
+### Running Real-Time Detection
+```bash
+python RTOD.py --ip_camera_url http://192.168.4.105:8080/video --fps_option auto
+```
+
+## Notes
+- Ensure the YOLO model weights (`best.pt` or `yolov8n.pt`) are available in the repository.
+- For live stream processing, verify the IP camera URL is accessible.
+- Press `q` to stop video processing or real-time detection.
+
+## Acknowledgments
+- [Ultralytics YOLOv8](https://github.com/ultralytics/ultralytics) for the object detection framework.
+- OpenCV for image and video processing.
 
 ## License
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+This project is licensed under the MIT License. See the `LICENSE` file for details.
+
+---
+Happy coding! 🚀
+
